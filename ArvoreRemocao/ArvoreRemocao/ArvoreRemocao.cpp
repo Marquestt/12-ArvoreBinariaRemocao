@@ -249,50 +249,77 @@ void removerElementoArvore(NO* no, int valor) {
 
 	// caso 1: sem filhos	
 	if (atual->esq && atual->dir == NULL) {
+		if (atual == raiz) {
+			raiz = NULL;
+		}
 		if (pai->esq == atual) {
-			pai->esq == NULL;
+			pai->esq = NULL;
 		}
 		if (pai->dir == atual) {
-			pai->dir == NULL;
+			pai->dir = NULL;
 		}
+		cout << "Elemento excluido\n";
 		free(atual);
 		return;
 	}
 
-	// caso 2: um filho	
-	//if (atual->esq == NULL && atual->dir != NULL) {
-		
-		//return;
-	//}
-
+	// caso 2: um filho    
+	if (atual->esq == NULL && atual->dir != NULL)
+	{
+		if (atual == raiz) {
+			raiz = pai->dir;
+		}
+		if (pai->dir == atual) {
+			pai->dir = atual->dir;
+		}
+		cout << "Elemento excluido\n";
+		free(atual);
+		return;
+	}
+	if (atual->dir == NULL && atual->esq != NULL) {
+		if (atual == raiz) {
+			raiz = pai->esq;
+		}
+		if (pai->esq != NULL) {
+			pai->esq = atual->esq;
+		}
+		cout << "Elemento excluido\n";
+		free(atual);
+		return;
+	}
 	// caso 3: dois filhos
-	//if () {
-	 
+	//if (pai->esq && pai->dir != NULL) {
+		//if (pai->esq < atual) {
+			
+		//}
+		//cout << "Elemento excluido\n";
+		//free(atual);
+		//return
 	//}
 
 	// procura o elmento mais a esquerda da sub-arvore da direita
-	NO* sucessor = atual->dir;
-	NO* paiSucessor = atual;
-	while (sucessor->esq != NULL) {
-		paiSucessor = sucessor;
-		sucessor = sucessor->esq;
-	}
+	//NO* sucessor = atual->dir;
+	//NO* paiSucessor = atual;
+	//while (sucessor->esq != NULL) {
+		//paiSucessor = sucessor;
+		//sucessor = sucessor->esq;
+	//}
 
 	// copia o valor do sucessor para o no atual
-	atual->valor = sucessor->valor;
+	//atual->valor = sucessor->valor;
 
 	// se existir uma sub-arvore a direita do sucessor , entao
 	// ela deve ser ligada ao pai do sucessor
-	if (sucessor->dir != NULL)
-	{
-		paiSucessor->esq = sucessor->dir;
-	}
-	else {
-		paiSucessor->esq = NULL;
-	}
+	//if (sucessor->dir != NULL)
+	//{
+		//paiSucessor->esq = sucessor->dir;
+	//}
+	//else {
+		//paiSucessor->esq = NULL;
+	//}
 
 	//libera memoria
-	free(sucessor);
+	//free(sucessor);
 
 
 }
