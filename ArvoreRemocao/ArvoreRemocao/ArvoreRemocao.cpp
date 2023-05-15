@@ -248,83 +248,77 @@ void removerElementoArvore(NO* no, int valor) {
 
 
 	// caso 1: sem filhos	
-	if (atual->esq && atual->dir == NULL) {
-		if (atual == raiz) {
+	if (atual->esq == NULL && atual->dir == NULL) {
+		if (pai == NULL) {
 			raiz = NULL;
 		}
-		if (pai->esq == atual) {
+		else if (pai->esq == atual) {
 			pai->esq = NULL;
 		}
-		if (pai->dir == atual) {
+		else if (pai->dir == atual) {
 			pai->dir = NULL;
 		}
-		cout << "Elemento excluido\n";
 		free(atual);
+		cout << "Elemento excluido\n";
 		return;
 	}
 
 	// caso 2: um filho    
-	if (atual->esq == NULL && atual->dir != NULL)
-	{
-		if (atual == raiz) {
-			raiz = pai->dir;
+	
+	else if (atual->esq == NULL || atual->dir == NULL) {
+		if (atual->esq != NULL) {
+			if (pai == NULL) {
+				raiz = atual->esq;
+			}
+			else if (pai->esq == atual) {
+				pai->esq = atual->esq;
+			}
+			else if (pai->dir == atual) {
+				pai->dir = atual->esq;
+			}
 		}
-		if (pai->dir == atual) {
-			pai->dir = atual->dir;
+		else if (atual->dir != NULL) {
+			if (pai == NULL) {
+				raiz = atual->dir;
+			}
+			else if (pai->esq == atual) {
+				pai->esq = atual->dir;
+			}
+			else if (pai->dir == atual) {
+				pai->dir = atual->dir;
+			}
 		}
-		cout << "Elemento excluido\n";
 		free(atual);
+		cout << "Elemento excluido\n";
 		return;
 	}
-	if (atual->dir == NULL && atual->esq != NULL) {
-		if (atual == raiz) {
-			raiz = pai->esq;
-		}
-		if (pai->esq != NULL) {
-			pai->esq = atual->esq;
-		}
-		cout << "Elemento excluido\n";
-		free(atual);
-		return;
-	}
+	
 	// caso 3: dois filhos
-	//if (pai->esq && pai->dir != NULL) {
-		//if (pai->esq < atual) {
-			
-		//}
-		//cout << "Elemento excluido\n";
-		//free(atual);
-		//return
-	//}
+	else if (atual->esq != NULL && atual->dir != NULL) {
+		// procura o elmento mais a esquerda da sub-arvore da direita
+		NO* sucessor = atual->dir;
+		NO* paiSucessor = atual;
+		while (sucessor->esq != NULL) {
+			paiSucessor = sucessor;
+			sucessor = sucessor->esq;
+		}
 
-	// procura o elmento mais a esquerda da sub-arvore da direita
-	//NO* sucessor = atual->dir;
-	//NO* paiSucessor = atual;
-	//while (sucessor->esq != NULL) {
-		//paiSucessor = sucessor;
-		//sucessor = sucessor->esq;
-	//}
+		// copia o valor do sucessor para o no atual
+		atual->valor = sucessor->valor;
 
-	// copia o valor do sucessor para o no atual
-	//atual->valor = sucessor->valor;
+		// se existir uma sub-arvore a direita do sucessor , entao
+		// ela deve ser ligada ao pai do sucessor
+		if (sucessor->dir != NULL)
+		{
+			paiSucessor->esq = sucessor->dir;
+		}
+		else {
+			paiSucessor->dir = sucessor->dir;
+		}
 
-	// se existir uma sub-arvore a direita do sucessor , entao
-	// ela deve ser ligada ao pai do sucessor
-	//if (sucessor->dir != NULL)
-	//{
-		//paiSucessor->esq = sucessor->dir;
-	//}
-	//else {
-		//paiSucessor->esq = NULL;
-	//}
-
-	//libera memoria
-	//free(sucessor);
-
-
+		//libera memoria
+		free(sucessor);
+		cout << "Elemento excluido\n";
+		return;
+	}
 }
-
-
-
-
-
